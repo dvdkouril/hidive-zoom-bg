@@ -1,6 +1,7 @@
 <script lang="ts">
 	import qr from "$lib/qr-invite.png";
 	import { onMount } from "svelte";
+	import { slide } from "svelte/transition";
 	// import { hidiveLogo } from "$lib/logos";
 
 	const hidiveLogo = `
@@ -78,15 +79,24 @@
 		// console.log(logo);
 	});
 
+	let useOtherLogo: boolean;
+	$: console.log(`useOtherLogo: ${useOtherLogo}`);
+
+	const logoDefaultWidth = 517;
+	const logoDefaultHeight = 158;
+
+	let bgColor: string = "#ffffff";
+	let logoSize: number = 1.0;
+
 	type Transform = {
 		x: number;
 		y: number;
 		s: number;
 	};
 
-	const transforms = generateTransforms(50);
+	$: transforms = generateTransforms(50, logoSize);
 
-	function generateTransforms(N: number): Transform[] {
+	function generateTransforms(N: number, scaling: number): Transform[] {
 		let transforms: Transform[] = [];
 		const arrX = Array.from({ length: N }, (_, i) => i);
 		for (const x of arrX) {
@@ -108,11 +118,16 @@
 				);
 			const sineValues = sineWave(2, 1, N * N);
 			const scaleOffset = 3;
+			const spX = logoDefaultWidth;
+			const spY = logoDefaultHeight;
 			for (const [y, i] of arrY.entries()) {
 				// transforms.push({ x: x, y: y, s: scale[i] });
 				// transforms.push({ x: x, y: y, s: sineValues[i] + scaleOffset });
-				transforms.push({ x: x, y: y, s: 2 });
-				// transforms.push({ x: x, y: y, s: 1 });
+				transforms.push({
+					x: x * spX * scaling,
+					y: y * spY * scaling,
+					s: 1 * scaling,
+				});
 			}
 		}
 		return transforms;
@@ -160,13 +175,8 @@
 		img.src = url;
 	}
 
-	let useOtherLogo: boolean;
-	$: console.log(`useOtherLogo: ${useOtherLogo}`);
-
-	let bgColor: string;
-
-	const spX = 240;
-	const spY = 50;
+	// const spX = 240;
+	// const spY = 50;
 </script>
 
 <div id="controls">
@@ -176,17 +186,16 @@
 	<label>the other logo</label>
 	<input type="color" bind:value={bgColor} />
 	<label>bg</label>
+	<input
+		type="range"
+		min="0.1"
+		max="2"
+		step="0.01"
+		bind:value={logoSize}
+	/>
+	<label>size</label>
 </div>
 <div id="c">
-	<!-- {#each transforms as t} -->
-	<!-- 	<img -->
-	<!-- 		src={logo} -->
-	<!-- 		style="position: absolute; left: {t.x * spX}px; top: {t.y * -->
-	<!-- 			spY}px; z-index: 1;" -->
-	<!-- 		width={100 * t.s} -->
-	<!-- 	/> -->
-	<!-- {/each} -->
-
 	<svg
 		bind:this={svgCanvas}
 		viewBox="0 0 1920 1080"
@@ -196,9 +205,7 @@
 	>
 		{#each transforms as t}
 			<g
-				transform="translate({t.x * spX - 10}, {t.y *
-					spY -
-					5}) scale(0.5, 0.5)"
+				transform="translate({t.x}, {t.y}) scale({t.s}, {t.s})"
 			>
 				{#if useOtherLogo}
 					{@html hidiveLogoWhite}
@@ -207,15 +214,31 @@
 				{/if}
 			</g>
 		{/each}
-		<image
-			id="qr"
-			transform="translate(10, 10) rotate(-20, 150, 150)"
-			href={qr}
-			width="300"
-		/>
-		<text x="80" y="380" class="invite-text"
-			>Join for a coffee break!</text
-		>
+
+		<!-- <rect -->
+		<!-- 	width={logoDefaultWidth} -->
+		<!-- 	height={logoDefaultHeight} -->
+		<!-- 	fill-opacity="0.5" -->
+		<!-- /> -->
+		<!---->
+		<!-- <rect -->
+		<!-- 	x={logoDefaultWidth} -->
+		<!-- 	y={logoDefaultHeight} -->
+		<!-- 	width={logoDefaultWidth} -->
+		<!-- 	height={logoDefaultHeight} -->
+		<!-- 	fill-opacity="0.5" -->
+		<!-- /> -->
+		<!---->
+		<!-- {@html hidiveLogo} -->
+		<!-- <image -->
+		<!-- 	id="qr" -->
+		<!-- 	transform="translate(10, 10) rotate(-20, 150, 150)" -->
+		<!-- 	href={qr} -->
+		<!-- 	width="300" -->
+		<!-- /> -->
+		<!-- <text x="80" y="380" class="invite-text" -->
+		<!-- 	>Join for a coffee break!</text -->
+		<!-- > -->
 	</svg>
 
 	<!-- <img id="qr" src={qr} width="300" /> -->
