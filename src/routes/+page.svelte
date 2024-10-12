@@ -86,7 +86,7 @@
 	const logoDefaultHeight = 158;
 
 	let bgColor: string = "#ffffff";
-	let logoSize: number = 1.0;
+	let logoSize: number = 0.5;
 
 	type Transform = {
 		x: number;
