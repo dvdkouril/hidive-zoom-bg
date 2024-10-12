@@ -91,7 +91,9 @@
 		const arrX = Array.from({ length: N }, (_, i) => i);
 		for (const x of arrX) {
 			const arrY = Array.from({ length: N }, (_, i) => i);
-			const scale = Array.from({ length: N }, (_, i) => Math.random());
+			const scale = Array.from({ length: N }, (_, i) =>
+				Math.random(),
+			);
 
 			const sineWave = (
 				amplitude: number,
@@ -100,7 +102,9 @@
 			) =>
 				Array.from(
 					{ length },
-					(_, i) => amplitude * Math.sin(frequency * i),
+					(_, i) =>
+						amplitude *
+						Math.sin(frequency * i),
 				);
 			const sineValues = sineWave(2, 1, N * N);
 			const scaleOffset = 3;
@@ -121,7 +125,9 @@
 		console.log("saving...");
 		console.log(svgCanvas);
 
-		const svgData = new XMLSerializer().serializeToString(svgCanvas);
+		const svgData = new XMLSerializer().serializeToString(
+			svgCanvas,
+		);
 		console.log(svgData);
 		const svgBlob = new Blob([svgData], {
 			type: "image/svg+xml;charset=utf-8",
@@ -157,6 +163,8 @@
 	let useOtherLogo: boolean;
 	$: console.log(`useOtherLogo: ${useOtherLogo}`);
 
+	let bgColor: string;
+
 	const spX = 240;
 	const spY = 50;
 </script>
@@ -166,6 +174,8 @@
 	<button on:click={() => saveToPNG()}>save</button>
 	<input type="checkbox" id="darkOrLight" bind:checked={useOtherLogo} />
 	<label>the other logo</label>
+	<input type="color" bind:value={bgColor} />
+	<label>bg</label>
 </div>
 <div id="c">
 	<!-- {#each transforms as t} -->
@@ -182,11 +192,12 @@
 		viewBox="0 0 1920 1080"
 		width="1920"
 		height="1080"
-		style="background-color: #e5e5e5;"
+		style="background-color: {bgColor || '#e5e5e5'};"
 	>
 		{#each transforms as t}
 			<g
-				transform="translate({t.x * spX - 10}, {t.y * spY -
+				transform="translate({t.x * spX - 10}, {t.y *
+					spY -
 					5}) scale(0.5, 0.5)"
 			>
 				{#if useOtherLogo}
@@ -202,7 +213,9 @@
 			href={qr}
 			width="300"
 		/>
-		<text x="80" y="380" class="invite-text">Join for a coffee break!</text>
+		<text x="80" y="380" class="invite-text"
+			>Join for a coffee break!</text
+		>
 	</svg>
 
 	<!-- <img id="qr" src={qr} width="300" /> -->
