@@ -98,9 +98,14 @@
 
 	function generateTransforms(N: number, scaling: number): Transform[] {
 		let transforms: Transform[] = [];
-		const arrX = Array.from({ length: N }, (_, i) => i);
+		const needsLogosInX = 1920 / (logoDefaultWidth * scaling) + 1; //~ plus one, just to be sure
+		const needsLogosInY = 1080 / (logoDefaultHeight * scaling) + 1; //~ plus one, just to be sure
+		const arrX = Array.from({ length: needsLogosInX }, (_, i) => i);
 		for (const x of arrX) {
-			const arrY = Array.from({ length: N }, (_, i) => i);
+			const arrY = Array.from(
+				{ length: needsLogosInY },
+				(_, i) => i,
+			);
 			const scale = Array.from({ length: N }, (_, i) =>
 				Math.random(),
 			);
