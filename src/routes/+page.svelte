@@ -82,6 +82,11 @@
 	let useOtherLogo: boolean;
 	$: console.log(`useOtherLogo: ${useOtherLogo}`);
 
+	let useGradient: boolean = false;
+	let gradientColorA: string = "red";
+	let gradientColorB: string = "yellow";
+	let useOnlyOneLogo = false;
+
 	const logoDefaultWidth = 517;
 	const logoDefaultHeight = 158;
 
@@ -92,6 +97,7 @@
 		x: number;
 		y: number;
 		s: number;
+		r: number;
 	};
 
 	$: transforms = generateTransforms(50, logoSize);
@@ -132,6 +138,7 @@
 					x: x * spX * scaling,
 					y: y * spY * scaling,
 					s: 1 * scaling,
+					r: 10,
 				});
 			}
 		}
@@ -199,6 +206,21 @@
 		bind:value={logoSize}
 	/>
 	<label>size</label>
+
+	<input type="checkbox" id="useGradient" bind:checked={useGradient} />
+	<label>use gradient</label>
+	<input type="color" bind:value={gradientColorA} />
+	<label>A</label>
+
+	<input type="color" bind:value={gradientColorB} />
+	<label>B</label>
+
+	<input
+		type="checkbox"
+		id="useOnlyOneLogo"
+		bind:checked={useOnlyOneLogo}
+	/>
+	<label>use only one logo</label>
 </div>
 <div id="c">
 	<svg
@@ -208,7 +230,32 @@
 		height="1080"
 		style="background-color: {bgColor || '#e5e5e5'};"
 	>
-		{#each transforms as t}
+		<defs>
+			<linearGradient id="Gradient1">
+				<stop stop-color={gradientColorA} offset="0%" />
+				<!-- <stop -->
+				<!-- 	class="stop1" -->
+				<!-- 	style="color: green;" -->
+				<!-- 	offset="0%" -->
+				<!-- /> -->
+				<!-- <stop class="stop2" offset="50%" /> -->
+				<stop
+					stop-color={gradientColorB}
+					offset="100%"
+				/>
+			</linearGradient>
+		</defs>
+		{#if useGradient}
+			<rect
+				id="rect1"
+				width="1920"
+				height="1080"
+				fill="red"
+			/>
+		{/if}
+
+		{#if useOnlyOneLogo}
+			{@const t = transforms[0]}
 			<g
 				transform="translate({t.x}, {t.y}) scale({t.s}, {t.s})"
 			>
@@ -218,7 +265,19 @@
 					{@html hidiveLogo}
 				{/if}
 			</g>
-		{/each}
+		{:else}
+			{#each transforms as t}
+				<g
+					transform="translate({t.x}, {t.y}) scale({t.s}, {t.s})"
+				>
+					{#if useOtherLogo}
+						{@html hidiveLogoWhite}
+					{:else}
+						{@html hidiveLogo}
+					{/if}
+				</g>
+			{/each}
+		{/if}
 
 		<!-- <rect -->
 		<!-- 	width={logoDefaultWidth} -->
@@ -268,5 +327,19 @@
 	.invite-text {
 		font: bold 30px sans-serif;
 		background-color: white;
+	}
+
+	#rect1 {
+		fill: url(#Gradient1);
+	}
+	.stop1 {
+		stop-color: red;
+	}
+	.stop2 {
+		stop-color: black;
+		stop-opacity: 0;
+	}
+	.stop3 {
+		stop-color: blue;
 	}
 </style>
