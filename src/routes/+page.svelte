@@ -129,8 +129,6 @@
 			const spX = logoDefaultWidth;
 			const spY = logoDefaultHeight;
 			for (const [y, i] of arrY.entries()) {
-				// transforms.push({ x: x, y: y, s: scale[i] });
-				// transforms.push({ x: x, y: y, s: sineValues[i] + scaleOffset });
 				transforms.push({
 					x: x * spX * scaling,
 					y: y * spY * scaling,
@@ -183,9 +181,6 @@
 		};
 		img.src = url;
 	}
-
-	// const spX = 240;
-	// const spY = 50;
 </script>
 
 <div id="controls">
@@ -269,54 +264,17 @@
 				</g>
 			{/each}
 		{/if}
-
-		<!-- <rect -->
-		<!-- 	width={logoDefaultWidth} -->
-		<!-- 	height={logoDefaultHeight} -->
-		<!-- 	fill-opacity="0.5" -->
-		<!-- /> -->
-		<!---->
-		<!-- <rect -->
-		<!-- 	x={logoDefaultWidth} -->
-		<!-- 	y={logoDefaultHeight} -->
-		<!-- 	width={logoDefaultWidth} -->
-		<!-- 	height={logoDefaultHeight} -->
-		<!-- 	fill-opacity="0.5" -->
-		<!-- /> -->
-		<!---->
-		<!-- {@html hidiveLogo} -->
-		<!-- <image -->
-		<!-- 	id="qr" -->
-		<!-- 	transform="translate(10, 10) rotate(-20, 150, 150)" -->
-		<!-- 	href={qr} -->
-		<!-- 	width="300" -->
-		<!-- /> -->
-		<!-- <text x="80" y="380" class="invite-text" -->
-		<!-- 	>Join for a coffee break!</text -->
-		<!-- > -->
 	</svg>
-
-	<!-- <img id="qr" src={qr} width="300" /> -->
 </div>
 
 <style>
 	#c {
 		position: relative;
-		/* background-color: red; */
 		width: 1920px;
 		height: 1080px;
 	}
 	#controls {
 		height: 30px;
 		background-color: lightgreen;
-	}
-	#qr {
-		border: 10px dashed black;
-		position: absolute;
-		z-index: 2;
-	}
-	.invite-text {
-		font: bold 30px sans-serif;
-		background-color: white;
 	}
 </style>
