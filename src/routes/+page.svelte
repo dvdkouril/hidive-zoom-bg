@@ -1,8 +1,5 @@
 <script lang="ts">
-	import qr from "$lib/qr-invite.png";
 	import { onMount } from "svelte";
-	import { slide } from "svelte/transition";
-	// import { hidiveLogo } from "$lib/logos";
 
 	const hidiveLogo = `
   <defs>
@@ -233,12 +230,6 @@
 		<defs>
 			<linearGradient id="Gradient1">
 				<stop stop-color={gradientColorA} offset="0%" />
-				<!-- <stop -->
-				<!-- 	class="stop1" -->
-				<!-- 	style="color: green;" -->
-				<!-- 	offset="0%" -->
-				<!-- /> -->
-				<!-- <stop class="stop2" offset="50%" /> -->
 				<stop
 					stop-color={gradientColorB}
 					offset="100%"
@@ -247,7 +238,7 @@
 		</defs>
 		{#if useGradient}
 			<rect
-				id="rect1"
+				style="fill: url(#Gradient1);"
 				width="1920"
 				height="1080"
 				fill="red"
@@ -327,19 +318,5 @@
 	.invite-text {
 		font: bold 30px sans-serif;
 		background-color: white;
-	}
-
-	#rect1 {
-		fill: url(#Gradient1);
-	}
-	.stop1 {
-		stop-color: red;
-	}
-	.stop2 {
-		stop-color: black;
-		stop-opacity: 0;
-	}
-	.stop3 {
-		stop-color: blue;
 	}
 </style>
